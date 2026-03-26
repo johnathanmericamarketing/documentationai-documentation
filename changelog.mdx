@@ -1,0 +1,130 @@
+---
+title: Changelog
+description: Track the latest updates, improvements, and new features in Clarity OPS.
+---
+
+## Recent Releases
+
+Stay updated with the latest changes in Clarity OPS. You receive automatic updates for minor and patch releases. For major versions, follow the upgrade steps below.
+
+<Update label="2024-10-15" description="v1.5.0" tags={["feature", "improvement"]}>
+
+## New Features
+
+- Added supplier portal integration for real-time order tracking.
+- Introduced inventory forecasting using historical sales data.
+- New bulk pricing update tool for managing product catalogs.
+
+## Improvements
+
+- Enhanced purchase order workflow with automated approval routing.
+- Optimized dashboard load times by `>40%`.
+
+## Bug Fixes
+
+- Fixed pricing sync issues with external supplier APIs.
+- Resolved inventory count discrepancies during stock transfers.
+
+</Update>
+
+<Update label="2024-09-20" description="v1.4.0" tags={["feature", "bugfix"]}>
+
+## New Features
+
+- Product catalog search with advanced filters for suppliers and categories.
+- Email notifications for low inventory thresholds.
+
+## Bug Fixes
+
+- Corrected order export errors for CSV and PDF formats.
+- Fixed supplier contact update failures.
+
+</Update>
+
+<Update label="2024-08-10" description="v1.3.0" tags={["breaking", "feature"]}>
+
+## Breaking Changes
+
+- Updated API authentication to use JWT tokens instead of API keys. Migrate by regenerating tokens via the dashboard.
+
+## New Features
+
+- Purchase order templates for recurring suppliers.
+- Integrated analytics dashboard for sales and inventory trends.
+
+## Migration Notes
+
+Update your integration code:
+
+<CodeGroup tabs="JavaScript,Python">
+  ```javascript
+  // Old API key auth
+  const response = await fetch('https://api.example.com/orders', {
+    headers: { 'X-API-Key': 'YOUR_API_KEY' }
+  });
+
+  // New JWT auth
+  const token = await getJWTToken();
+  const response = await fetch('https://api.example.com/orders', {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  ```
+  ```python
+  import requests
+
+  # Old API key auth
+  response = requests.get('https://api.example.com/orders', headers={'X-API-Key': 'YOUR_API_KEY'})
+
+  # New JWT auth
+  token = get_jwt_token()
+  response = requests.get('https://api.example.com/orders', headers={'Authorization': f'Bearer {token}'})
+  ```
+</CodeGroup>
+
+</Update>
+
+## Release Schedule
+
+<Callout kind="info">
+  Clarity OPS follows semantic versioning (MAJOR.MINOR.PATCH). Major releases occur quarterly, minor monthly, and patches weekly as needed. Check the [dashboard](https://dashboard.example.com) for your instance version.
+</Callout>
+
+| Release Type | Frequency | Auto-Update |
+|--------------|-----------|-------------|
+| Major       | Quarterly | Manual     |
+| Minor       | Monthly   | Automatic  |
+| Patch       | As needed | Automatic  |
+
+## Upgrading Manually
+
+For major releases, follow these steps:
+
+<Steps>
+  <Step title="Backup Data" icon="database">
+    Export your products, suppliers, and orders from the dashboard.
+  </Step>
+  <Step title="Review Changes" icon="book-open">
+    Read the migration notes in this changelog.
+  </Step>
+  <Step title="Update Instance" icon="upload">
+    In your dashboard, navigate to Settings > Updates and select the new version.
+  </Step>
+  <Step title="Test Integration" icon="zap">
+    Verify API calls using the new endpoints.
+  </Step>
+</Steps>
+
+## Next Steps
+
+<Columns cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Get started with Clarity OPS in minutes.
+  </Card>
+  <Card title="API Reference" icon="code" href="/api-reference">
+    Integrate with our REST API.
+  </Card>
+</Columns>
+
+<Callout kind="tip">
+  This changelog is a starter template. Customize it with your actual release history.
+</Callout>

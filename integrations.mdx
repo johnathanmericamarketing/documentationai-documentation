@@ -1,0 +1,179 @@
+---
+title: Integrations with Clarity OPS
+description: Connect Clarity OPS with third-party services to enhance your operations workflow.
+---
+
+## Overview
+
+Clarity OPS supports seamless integrations with popular third-party services. You can connect e-commerce platforms, accounting software, and custom applications using webhooks and the REST API. These integrations automate product syncing, inventory updates, and order processing, streamlining your operations.
+
+<Callout kind="info">
+  All integrations require an API key from your Clarity OPS dashboard. Generate one at `https://dashboard.example.com/settings/api`.
+</Callout>
+
+## Supported Integrations
+
+Explore ready-to-use connections for common workflows.
+
+<Columns cols={3}>
+  <Card title="Shopify" icon="shopping-cart" href="/docs/shopify-integration">
+    Sync products, inventory, and orders in real-time.
+  </Card>
+  <Card title="QuickBooks" icon="dollar-sign" href="/docs/quickbooks-integration">
+    Automate accounting entries from purchase orders.
+  </Card>
+  <Card title="Slack" icon="message-circle" href="/docs/slack-integration">
+    Receive notifications for inventory alerts and orders.
+  </Card>
+  <Card title="Zapier" icon="zap" href="/docs/zapier-integration">
+    Build no-code automations with 5000+ apps.
+  </Card>
+</Columns>
+
+## Setting Up Webhooks
+
+Webhooks enable real-time updates from Clarity OPS to your services. Configure them to trigger on events like order creation or inventory changes.
+
+<Steps>
+  <Step title="Generate Webhook URL" icon="link">
+    In your dashboard, navigate to Settings > Webhooks. Create a new webhook and copy the generated URL.
+  </Step>
+  <Step title="Select Events" icon="bell">
+    Choose events such as `order.created`, `inventory.updated`, or `product.sync`.
+  </Step>
+  <Step title="Verify Endpoint" icon="check-circle">
+    Test the webhook by sending a sample payload. Ensure your endpoint responds with HTTP 200.
+  </Step>
+</Steps>
+
+Here is a sample webhook payload for an order event:
+
+<CodeGroup tabs="JSON">
+  ```json
+  {
+    "event": "order.created",
+    "data": {
+      "id": "ord_123abc",
+      "supplier": "Acme Corp",
+      "items": [
+        {
+          "product_id": "prod_456def",
+          "quantity": 100,
+          "price": 29.99
+        }
+      ],
+      "total": 2999
+    },
+    "timestamp": "2024-01-15T10:30:00Z"
+  }
+  ```
+</CodeGroup>
+
+## API Access for Custom Connections
+
+Use the Clarity OPS REST API for programmatic access. Authenticate requests with your API key.
+
+<ParamField header="Authorization" param-type="string" required="true">
+  Bearer `{YOUR_API_KEY}`
+</ParamField>
+
+<ParamField query="supplier_id" param-type="string" required="false">
+  Filter products by supplier.
+</ParamField>
+
+Example: Fetch products via API.
+
+<Request tabs="cURL,JavaScript">
+  ```bash
+  curl -X GET "https://api.example.com/v1/products" \
+    -H "Authorization: Bearer YOUR_API_KEY"
+  ```
+
+  ```javascript
+  const response = await fetch('https://api.example.com/v1/products', {
+    headers: {
+      'Authorization': 'Bearer YOUR_API_KEY'
+    }
+  });
+  const products = await response.json();
+  ```
+</Request>
+
+<Response tabs="200">
+  ```json
+  {
+    "products": [
+      {
+        "id": "prod_456def",
+        "name": "Widget Pro",
+        "price": 29.99,
+        "stock": 500
+      }
+    ]
+  }
+  ```
+</Response>
+
+## E-commerce Platform Syncing
+
+Sync inventory and orders with popular platforms.
+
+<Tabs>
+  <Tab title="Shopify" icon="shopping-cart">
+    Use OAuth to connect your Shopify store. Clarity OPS pushes inventory updates every 15 minutes.
+
+    <CodeGroup tabs="Node.js,Python">
+      ```javascript
+      // Shopify product sync
+      await fetch('https://api.example.com/v1/sync/shopify', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer YOUR_API_KEY' },
+        body: JSON.stringify({ shop: 'your-shop.myshopify.com' })
+      });
+      ```
+
+      ```python
+      import requests
+      response = requests.post(
+        'https://api.example.com/v1/sync/shopify',
+        headers={'Authorization': 'Bearer YOUR_API_KEY'},
+        json={'shop': 'your-shop.myshopify.com'}
+      )
+      ```
+    </CodeGroup>
+  </Tab>
+  <Tab title="WooCommerce" icon="wordpress">
+    Configure webhooks in WooCommerce to pull orders into Clarity OPS.
+  </Tab>
+</Tabs>
+
+## Accounting Software Linkages
+
+Integrate with accounting tools for automated invoicing.
+
+<Expandable title="QuickBooks Setup" default-open="true">
+  1. Enable API access in QuickBooks.
+  2. Map Clarity OPS purchase orders to QuickBooks invoices.
+  3. Test with a sample order.
+
+  <Callout kind="tip">
+    Use the `accounting.sync` webhook for real-time journal entries.
+  </Callout>
+</Expandable>
+
+<Expandable title="Xero Integration">
+  Similar setup with OAuth 2.0. Sync suppliers and pricing automatically.
+</Expandable>
+
+## Next Steps
+
+Review the [API Reference](/api-reference) for full endpoint details. Start with a simple webhook to test your integration.
+
+<Columns cols={2}>
+  <Card title="Webhook Troubleshooting" icon="help-circle" href="/docs/troubleshooting">
+    Common issues and solutions.
+  </Card>
+  <Card title="Custom API Guides" icon="code" href="/docs/api-reference">
+    Advanced endpoints and rate limits.
+  </Card>
+</Columns>
